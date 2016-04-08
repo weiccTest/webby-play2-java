@@ -6,6 +6,8 @@ import play.mvc.*;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
 
 /**
  * This controller contains an action to handle HTTP requests
@@ -13,9 +15,10 @@ import java.net.UnknownHostException;
  */
 public class HomeController extends Controller {
 
-    public Result index() {
+    public CompletionStage<Result> index() {
         final String ip = request().remoteAddress();
-        return ok(Json.toJson(new Location(ip, getHostname(ip))));
+        return CompletableFuture.supplyAsync(() -> getHostname(ip))
+                .thenApply(hostname -> ok(Json.toJson(new Location(ip, hostname))));
     }
 
     /**
