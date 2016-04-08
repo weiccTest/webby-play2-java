@@ -5,4 +5,7 @@ target
 /.classpath
 /.project
 /.settings
+/project/target
+/project/project
 /RUNNING_PID
+*.iml
